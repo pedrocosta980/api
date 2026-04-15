@@ -1,0 +1,17 @@
+datasource db {
+  provider = "postgresql"
+}
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+model Pacientes{
+  id String @id @default(uuid())
+  nome String
+  dataNascimento DateTime
+  carteirinha String
+  cpf String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+}
