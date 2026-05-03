@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Http;
+
+use App\Http\Request;
+use App\Http\Response;
+
+class Core{
+  public static function dispatch(array $routes){
+    $url = "";
+    
+    isset($_SERVER["REQUEST_URI"]) && $url .= $_SERVER["REQUEST_URI"];
+
+    $url !== "/" && $url = rtrim($url, "/");
+
+    $prefixController = "App\\Controllers\\";
+
+    $routeFound = false;
+
+    foreach($routes as $route){
+      $pattern = "#^". preg_replace("/{id}/", "([\w-]+)", $route["path"])."$#";
+      if(preg_match($pattern, $url, $matches) && $route["method"] == Request::method()){
+        array_shift($matches);
+
+        if($route["method"] !== Request::method()){
+          Response::json([
+            "message" => "Method not allowed",
+            "type" => "error",
+          ], 405);
+          return;
+        }
+
+        $routeFound = true;
+
+        [$controller, $action] = explode("@", $route["action"]);
+
+        $controller = $prefixController . $controller;
+        $extendController = new $controller;
+        $extendController->$action(new Request, new Response, $matches);
+      }
+    }
+    if(!$routeFound){
+      $controller = $prefixController."NotFoundController";
+      $extendController = new $controller();
+      $extendController->index(new Request, new Response);
+    }
+  }
+}
