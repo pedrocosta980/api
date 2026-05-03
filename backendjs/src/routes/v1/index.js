@@ -1,6 +1,6 @@
-const app = require("express").Router();
-const PacienteController = require("../../controllers/PacienteController.js");
+const router = require("express").Router();
+const PacienteRouter = require("./PacientesRoutes");
 
-app.get("/pacientes", PacienteController.index);
+router.use("/pacientes", PacienteRouter);
 
-module.exports = app;
+module.exports = router;

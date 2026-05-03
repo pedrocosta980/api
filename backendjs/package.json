@@ -4,8 +4,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "start": "node  src/server.js",
+    "dev": "nodemon src/server.js",
+    "generate": "npx prisma generate",
+    "migrate": "npx prisma migrate dev --name '.'",
+    "db": "npm run generate && npm run migrate",
+    "init": "docker-compose up -d && npm run db && npm run dev"
   },
   "keywords": [],
   "author": "",
@@ -14,13 +18,18 @@
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.7.0",
     "@prisma/client": "^7.7.0",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "mariadb": "^3.5.2",
+    "morgan": "^1.10.1",
     "mysql2": "^3.22.0",
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.6.0",
     "prisma": "^7.7.0"
   }
 }

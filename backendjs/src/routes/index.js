@@ -1,5 +1,5 @@
-const app = require("express").Router();
+const route = require("express").Router();
 
-app.use("/v1", require("./v1"));
+route.use("/v1", require("./v1"));
 
-module.exports = app;
+module.exports = route;
